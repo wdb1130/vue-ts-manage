@@ -5,7 +5,7 @@ import store from './store'
 import ElementUI from 'element-ui'
 import api from '@/api'
 import 'element-ui/lib/theme-chalk/index.css'
-import i18n from "./lang"; 
+import i18n from './lang'
 // import vueParticleLine from 'vue-particle-line'
 // import 'vue-particle-line/dist/vue-particle-line.css'
 

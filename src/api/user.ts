@@ -1,6 +1,6 @@
 import request from '@/utils/request'
-import qs from 'qs'; // 根据需求是否导入qs模块
-const user = { 
+// import qs from 'qs' // 根据需求是否导入qs模块
+const user = {
   getUsers(params: any):any {
     return request({
       url: '/users',
@@ -16,31 +16,29 @@ const user = {
       data
     })
   },
-  
-  deleteUser(username: string):any {
 
+  deleteUser(username: string):any {
     return request({
       url: `/users/${username}`,
       method: 'delete'
     })
   },
-  
-  login(data: any):any {
 
+  login(data: any):any {
     return request({
       url: '/users/login',
       method: 'post',
       data
     })
   },
-  
+
   logout():any {
     return request({
       url: '/users/logout',
       method: 'post'
     })
   },
-  
+
   register(data: any):any {
     return request({
       url: '/users/register',

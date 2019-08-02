@@ -8,7 +8,7 @@ class Color {
   b: number
   style: string
 
-  constructor (min:number) {
+  constructor(min:number) {
     this.min = min || 0
     this.r = this.colorValue(min)
     this.g = this.colorValue(min)
@@ -16,11 +16,11 @@ class Color {
     this.style = this.createColorStyle(this.r, this.g, this.b)
   }
 
-  colorValue (min:number):number {
+  colorValue(min:number):number {
     return Math.floor(Math.random() * 255 + min)
   }
 
-  createColorStyle (r:number, g:number, b:number):string {
+  createColorStyle(r:number, g:number, b:number):string {
     return `rgba(${r}, ${g}, ${b}, .8)`
   }
 }
@@ -34,13 +34,13 @@ class Dot {
   radius:number = Math.random() * 3
   color:any = Math.random() * 3
 
-  constructor (ctx:any, canvasWidth:number, canvasHeight:number, x?:number, y?:number) {
+  constructor(ctx:any, canvasWidth:number, canvasHeight:number, x?:number, y?:number) {
     this.ctx = ctx
     this.x = x || Math.random() * canvasWidth
     this.y = y || Math.random() * canvasHeight
   }
 
-  draw ():void {
+  draw():void {
     this.ctx.beginPath()
     this.ctx.fillStyle = this.color.style
     this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
@@ -56,13 +56,13 @@ export default class ParticleLine {
   ctx:any
   color:any
 
-  constructor (tagId:any, options:any) {
+  constructor(tagId:any, options:any) {
     this.tagId = tagId
     this.options = options
     this.init()
   }
 
-  init () {
+  init() {
     const canvas = document.querySelector(this.tagId)
     const ctx = canvas.getContext('2d')
     canvas.width = document.body.clientWidth > minWidth ? document.body.clientWidth : minWidth
@@ -82,7 +82,7 @@ export default class ParticleLine {
     this.hoverEffect()
   }
 
-  hoverEffect () {
+  hoverEffect() {
     if (this.options && this.options.hoverEffect) {
       this.canvas.addEventListener('mousemove', (e:any) => {
         if (this.dots.array.length > this.dots.nb) {
@@ -93,7 +93,7 @@ export default class ParticleLine {
     }
   }
 
-  resize () {
+  resize() {
     const width = document.body.clientWidth > minWidth ? document.body.clientWidth : minWidth
     const height = document.body.clientHeight > minHeight ? document.body.clientHeight : minHeight
     this.canvas.width = width
@@ -101,11 +101,11 @@ export default class ParticleLine {
     this.createDots(this.ctx, width, height)
   }
 
-  mixComponents (comp1:number, weight1:number, comp2:number, weight2:number) {
+  mixComponents(comp1:number, weight1:number, comp2:number, weight2:number) {
     return (comp1 * weight1 + comp2 * weight2) / (weight1 + weight2)
   }
 
-  averageColorStyles (dot1:any, dot2:any) {
+  averageColorStyles(dot1:any, dot2:any) {
     const color1 = dot1.color
     const color2 = dot2.color
     const r = this.mixComponents(color1.r, dot1.radius, color2.r, dot2.radius)
@@ -114,14 +114,14 @@ export default class ParticleLine {
     return this.color.createColorStyle(Math.floor(r), Math.floor(g), Math.floor(b))
   }
 
-  createDots (ctx:any, canvasWidth:number, canvasHeight:number) {
+  createDots(ctx:any, canvasWidth:number, canvasHeight:number) {
     this.dots.array = []
     for (let i = 0; i < this.dots.nb; i++) {
       this.dots.array.push(new Dot(ctx, canvasWidth, canvasHeight))
     }
   }
 
-  moveDots () {
+  moveDots() {
     for (let i = 0; i < this.dots.nb; i++) {
       const dot = this.dots.array[i]
       if (dot.y < 0 || dot.y > this.canvas.height) {
@@ -136,7 +136,7 @@ export default class ParticleLine {
     }
   }
 
-  connectDots () {
+  connectDots() {
     for (let i = 0; i < this.dots.array.length; i++) {
       for (let j = 0; j < this.dots.array.length; j++) {
         const iDot = this.dots.array[i]
@@ -153,14 +153,14 @@ export default class ParticleLine {
     }
   }
 
-  drawDots () {
+  drawDots() {
     for (let i = 0; i < this.dots.array.length; i++) {
       const dot = this.dots.array[i]
       dot.draw()
     }
   }
 
-  animateDots () {
+  animateDots() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     this.drawDots()
     this.connectDots()

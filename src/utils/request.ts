@@ -2,22 +2,21 @@ import axios from 'axios'
 import router from '@/router'
 import { Message, MessageBox } from 'element-ui'
 
-
-/** 
+/**
  * 跳转登录页
  * 携带当前页面路由，以期在登录页面完成登录后返回当前页面
  */
 const toLogin = () => {
   router.replace({
-    path: '/login',        
+    path: '/login',
     query: {
       redirect: router.currentRoute.fullPath
     }
-  });
+  })
 }
 
-/** 
- * 请求失败后的错误统一处理 
+/**
+ * 请求失败后的错误统一处理
  * @param {Number} status 请求失败的状态码
  */
 const errorHandle = (status:number, other:string) => {
@@ -25,41 +24,38 @@ const errorHandle = (status:number, other:string) => {
   switch (status) {
     // 401: 未登录状态，跳转登录页
     case 401:
-      toLogin();
-      break;
+      toLogin()
+      break
     // 403 token过期
     case 403:
-      Message('登录过期，请重新登录');
+      Message('登录过期，请重新登录')
       // localStorage.removeItem('token');
       // store.commit('loginSuccess', null);
       setTimeout(() => {
-        toLogin();
-      }, 1000);
-      break;
+        toLogin()
+      }, 1000)
+      break
     case 404:
-      Message('请求的资源不存在'); 
-      break;
+      Message('请求的资源不存在')
+      break
     default:
-      console.log(other);   
+      console.log(other)
   }
 }
-
-
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   timeout: 10000,
   withCredentials: true // send cookies when requests
 })
-service.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-
+service.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 
 // Request interceptors
 service.interceptors.request.use(
   (config) => {
-    // Add token header to every request 根据本地是否存在token判断用户的登录情况  
-    // const token = store.state.token;        
-    // token && (config.headers.Authorization = token);        
+    // Add token header to every request 根据本地是否存在token判断用户的登录情况
+    // const token = store.state.token;
+    // token && (config.headers.Authorization = token);
     return config
   },
   (error) => {
@@ -87,7 +83,7 @@ service.interceptors.response.use(
             // UserModule.ResetToken()
             location.reload() // To prevent bugs from vue-router
           })
-        }else {
+        } else {
           Message({
             message: res.message || 'Error',
             type: 'error',
@@ -103,17 +99,17 @@ service.interceptors.response.use(
     }
   },
   (error) => {
-    const { response } = error;
+    const { response } = error
     if (response) {
-      //return status not 200
-      errorHandle(response.status, response.data.message);
-      return Promise.reject(response);
+      // return status not 200
+      errorHandle(response.status, response.data.message)
+      return Promise.reject(response)
     } else {
       // 是否在线
       if (!window.navigator.onLine) {
         //  store.commit('changeNetwork', false);
       } else {
-        return Promise.reject(error);
+        return Promise.reject(error)
       }
     }
   }
