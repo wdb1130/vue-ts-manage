@@ -56,7 +56,7 @@ export default class ParticleLine {
   ctx:any
   color:any
 
-  constructor(tagId:any, options:any) {
+  constructor(tagId:any, options?:any) {
     this.tagId = tagId
     this.options = options
     this.init()
